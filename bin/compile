@@ -16,11 +16,15 @@ indent() {
 build_dir=$1
 cache_dir=$2
 
-mkdir -p $cache_dir/bower_packages
+mkdir -p $cache_dir/bower_packages $cache_dir/npm_packages
 
 PATH=$build_dir/vendor/node/bin:$PATH
 
 cd $build_dir
+
+echo "-----> Configuring npm"
+$build_dir/vendor/node/bin/npm config set cache $cache_dir/npm_packages --global 2>&1 | indent
+
 echo "-----> Installing Bower"
 $build_dir/vendor/node/bin/npm install bower --userconfig $build_dir/.npmrc --production 2>&1 | indent
 
