@@ -2,7 +2,7 @@
 
 Install Bower and Bower components
 
-Note that this buildpack is meant to be used with [__heroku-buildpack-multi__](https://github.com/ddollar/heroku-buildpack-multi), you must have node and npm installed before installing this one.
+Note that this buildpack is meant to be used with [__heroku-buildpack-multi__](https://github.com/ddollar/heroku-buildpack-multi), <s>you must have node and npm installed before installing this one</s> **this fork installs node itself, before installing bower**.
 
 If like us you use Rails, Bower components must be installed before assets are precompiled.
 
@@ -14,8 +14,7 @@ $ heroku config:add BUILDPACK_URL=https://github.com/ddollar/heroku-buildpack-mu
 
 ```
 // .buildpacks
-https://github.com/heroku/heroku-buildpack-nodejs.git
-https://github.com/mirego/heroku-buildpack-bower.git
+https://github.com/fetch/heroku-buildpack-bower.git
 https://github.com/heroku/heroku-buildpack-ruby.git
 ```
 
