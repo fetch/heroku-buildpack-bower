@@ -13,6 +13,10 @@ indent() {
   esac
 }
 
+NODE_VERSION=0.10.30
+NODE_NAME=node-v$NODE_VERSION-linux-x64
+NODE_ARCHIVE=$NODE_NAME.tar.gz
+
 build_dir=$1
 cache_dir=$2
 
@@ -20,10 +24,22 @@ mkdir -p $cache_dir/bower_packages $cache_dir/npm_packages
 
 PATH=$build_dir/vendor/node/bin:$PATH
 
+echo "-----> Install node $NODE_VERSION"
+curl -s -o /tmp/$NODE_ARCHIVE http://nodejs.org/dist/v$NODE_VERSION/$NODE_ARCHIVE
+
+mkdir -p $build_dir/vendor
+cd $build_dir/vendor
+
+tar xzf /tmp/$NODE_ARCHIVE
+mv $NODE_NAME node
+
 cd $build_dir
 
-echo "-----> Configuring npm"
+echo "-----> Configuring npm $($build_dir/vendor/node/bin/npm -v)"
 $build_dir/vendor/node/bin/npm config set cache $cache_dir/npm_packages --global 2>&1 | indent
+
+echo "-----> Installing npm dependencies"
+$build_dir/vendor/node/bin/npm install --production 2>&1 | indent
 
 echo "-----> Installing Bower"
 $build_dir/vendor/node/bin/npm install bower --userconfig $build_dir/.npmrc --production 2>&1 | indent
